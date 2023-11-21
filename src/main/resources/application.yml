@@ -1,0 +1,12 @@
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3304/easy_rsv?serverTimezone=Asia/Seoul&characterEncoding=UTF-8
+    username: root
+    password: test
+
+  jpa:
+    hibernate:
+      ddl-auto: create
+    properties:
+      show-sql: true
