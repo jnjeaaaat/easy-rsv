@@ -2,9 +2,10 @@ package shop.jnjeaaaat.easyrsv.web;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
-import shop.jnjeaaaat.easyrsv.domain.dto.ShopDto;
-import shop.jnjeaaaat.easyrsv.domain.dto.ShopRequest;
+import shop.jnjeaaaat.easyrsv.domain.dto.shop.ShopDto;
+import shop.jnjeaaaat.easyrsv.domain.dto.shop.ShopRequest;
 import shop.jnjeaaaat.easyrsv.domain.dto.base.BaseResponse;
+import shop.jnjeaaaat.easyrsv.service.ShopProvider;
 import shop.jnjeaaaat.easyrsv.service.ShopService;
 
 import java.util.List;
@@ -18,6 +19,7 @@ import static shop.jnjeaaaat.easyrsv.domain.dto.base.BaseResponseStatus.*;
 public class ShopController {
 
     private final ShopService shopService;
+    private final ShopProvider shopProvider;
 
     /**
      * Shop 등록 Controller
@@ -36,7 +38,7 @@ public class ShopController {
     @GetMapping("")
     public BaseResponse<List<ShopDto>> getShopListByName(@RequestParam String name) {
 
-        List<ShopDto> shopDtos = shopService.getShopByName(name)
+        List<ShopDto> shopDtos = shopProvider.getShopByName(name)
                 .stream()
                 .map(shop -> ShopDto.from(shop))
                 .collect(Collectors.toList());
@@ -55,7 +57,7 @@ public class ShopController {
         return new BaseResponse<>(
                 GET_SHOP_BY_ID,
                 ShopDto.from(
-                        shopService.getShopById(id)
+                        shopProvider.getShopById(id)
                 )
         );
     }

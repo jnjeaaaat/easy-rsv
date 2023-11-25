@@ -8,12 +8,12 @@ import shop.jnjeaaaat.easyrsv.domain.dto.base.BaseResponseStatus;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class ShopException extends RuntimeException{
+public class BaseException extends RuntimeException{
     private BaseResponseStatus status;
     private int errorCode;
     private String errorMessage;
 
-    public ShopException(BaseResponseStatus status) {
+    public BaseException(BaseResponseStatus status) {
         this.status = status;
         this.errorCode = status.getValue();
         this.errorMessage = status.getMessage();
