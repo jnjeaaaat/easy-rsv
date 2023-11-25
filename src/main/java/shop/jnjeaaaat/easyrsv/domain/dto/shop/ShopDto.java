@@ -1,6 +1,7 @@
-package shop.jnjeaaaat.easyrsv.domain.dto;
+package shop.jnjeaaaat.easyrsv.domain.dto.shop;
 
 import lombok.*;
+import shop.jnjeaaaat.easyrsv.domain.dto.user.OwnerInform;
 import shop.jnjeaaaat.easyrsv.domain.model.Shop;
 
 import java.time.LocalDateTime;
@@ -16,6 +17,9 @@ public class ShopDto {
     private String name;
     private String description;
     private String location;
+
+    private OwnerInform owner;
+
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 
@@ -28,6 +32,10 @@ public class ShopDto {
                 .name(shop.getName())
                 .description(shop.getDescription())
                 .location(shop.getLocation())
+                .owner(OwnerInform.builder()
+                        .email(shop.getOwner().getEmail())
+                        .name(shop.getOwner().getName())
+                        .build())
                 .createdAt(shop.getCreatedAt())
                 .updatedAt(shop.getUpdatedAt())
                 .build();

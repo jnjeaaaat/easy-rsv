@@ -11,11 +11,11 @@ import shop.jnjeaaaat.easyrsv.domain.dto.base.BaseResponse;
 public class GlobalExceptionHandler {
 
     /**
-     * ShopException 발생 시
+     * BaseException 발생 시
      * BaseResponse 객체로 반환
      */
-    @ExceptionHandler(ShopException.class)
-    public ResponseEntity<BaseResponse> handleShopException(ShopException e) {
+    @ExceptionHandler(BaseException.class)
+    public ResponseEntity<BaseResponse> handleShopException(BaseException e) {
         log.error("{} is occurred.", e.getStatus());
 
         return ResponseEntity
