@@ -5,11 +5,9 @@ import org.springframework.web.bind.annotation.*;
 import shop.jnjeaaaat.easyrsv.domain.dto.shop.ShopDto;
 import shop.jnjeaaaat.easyrsv.domain.dto.shop.ShopRequest;
 import shop.jnjeaaaat.easyrsv.domain.dto.base.BaseResponse;
-import shop.jnjeaaaat.easyrsv.service.ShopProvider;
-import shop.jnjeaaaat.easyrsv.service.ShopService;
+import shop.jnjeaaaat.easyrsv.service.impl.ShopServiceImpl;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 import static shop.jnjeaaaat.easyrsv.domain.dto.base.BaseResponseStatus.*;
 
@@ -18,8 +16,7 @@ import static shop.jnjeaaaat.easyrsv.domain.dto.base.BaseResponseStatus.*;
 @RequestMapping("/easy-rsv/v1/shop")
 public class ShopController {
 
-    private final ShopService shopService;
-    private final ShopProvider shopProvider;
+    private final ShopServiceImpl shopService;
 
     /**
      * Shop 등록 Controller
@@ -28,7 +25,7 @@ public class ShopController {
     public BaseResponse<ShopDto> addShop(@RequestBody ShopRequest request) {
         return new BaseResponse<>(
                 SUCCESS_ADD_SHOP,
-                ShopDto.from(shopService.addShop(request))
+                shopService.addShop(request)
         );
     }
 
@@ -37,15 +34,9 @@ public class ShopController {
      */
     @GetMapping("")
     public BaseResponse<List<ShopDto>> getShopListByName(@RequestParam String name) {
-
-        List<ShopDto> shopDtos = shopProvider.getShopByName(name)
-                .stream()
-                .map(shop -> ShopDto.from(shop))
-                .collect(Collectors.toList());
-
         return new BaseResponse<>(
                 GET_SHOP_LIST_BY_NAME,
-                shopDtos
+                shopService.getShopByName(name)
         );
     }
 
@@ -56,9 +47,7 @@ public class ShopController {
     public BaseResponse<ShopDto> getShopById(@PathVariable("shopId") Long id) {
         return new BaseResponse<>(
                 GET_SHOP_BY_ID,
-                ShopDto.from(
-                        shopProvider.getShopById(id)
-                )
+                shopService.getShopById(id)
         );
     }
 }

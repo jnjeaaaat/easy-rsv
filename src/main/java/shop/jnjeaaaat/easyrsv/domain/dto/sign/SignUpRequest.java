@@ -1,4 +1,4 @@
-package shop.jnjeaaaat.easyrsv.domain.dto.user;
+package shop.jnjeaaaat.easyrsv.domain.dto.sign;
 
 import lombok.*;
 
@@ -8,7 +8,7 @@ import lombok.*;
 @NoArgsConstructor
 @Builder
 @ToString
-public class UserRequest {
+public class SignUpRequest {
     private String email;
     private String password;
     private String name;
