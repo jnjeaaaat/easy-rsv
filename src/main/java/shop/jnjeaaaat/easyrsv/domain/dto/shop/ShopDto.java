@@ -23,8 +23,8 @@ public class ShopDto {
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 
-    /**
-     * Shop Entity -> ShopDto
+    /*
+     Shop Entity -> ShopDto
      */
     public static ShopDto from(Shop shop) {
         return ShopDto.builder()
