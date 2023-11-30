@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import shop.jnjeaaaat.easyrsv.domain.dto.sign.SignInResponse;
 import shop.jnjeaaaat.easyrsv.domain.dto.sign.SignUpRequest;
 import shop.jnjeaaaat.easyrsv.domain.dto.sign.SignInRequest;
 import shop.jnjeaaaat.easyrsv.domain.dto.user.UserDto;
@@ -49,12 +50,14 @@ public class SignServiceImpl implements SignService {
 
     /*
     email, password 값 받아서 user 정보 확인,
-    email, roles 값으로 토큰 발행 후 리턴
+    email, roles 값으로 토큰 발행,
+    SignInResponse form 에 맞춰서 리턴
     */
     @Override
-    public String signInAndCreateToken(SignInRequest request) {
+    public SignInResponse signInAndCreateToken(SignInRequest request) {
         log.info("[getSignInResult] 로그인 정보 전달");
-        User user = userRepository.getByEmail(request.getEmail());
+        User user = userRepository.findByEmail(request.getEmail())
+                .orElseThrow(() -> new BaseException(USER_NOT_FOUND));
         log.info("[getSignInResult] Email : {}", request.getEmail());
 
         log.info("[getSignInResult] 패스워드 비교");
@@ -63,6 +66,14 @@ public class SignServiceImpl implements SignService {
         }
         log.info("[getSignInResult] 패스워드 일치");
 
-        return jwtTokenProvider.createToken(user.getEmail(), user.getRoles());
+        // 토큰 발행
+        String token = jwtTokenProvider.createToken(user.getEmail(), user.getRoles());
+
+        // return SignInResponse Builder
+        return SignInResponse.builder()
+                .email(user.getEmail())
+                .roles(user.getRoles())
+                .jwt(token)
+                .build();
     }
 }

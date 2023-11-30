@@ -37,4 +37,4 @@ out/
 .vscode/
 
 /logs
-/src/main/java/shop/jnjeaaaat/easyrsv/config/secret/Secret.java
+/src/main/java/shop/jnjeaaaat/easyrsv/config/secret

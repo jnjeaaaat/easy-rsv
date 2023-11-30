@@ -2,10 +2,10 @@ package shop.jnjeaaaat.easyrsv.web;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
+import shop.jnjeaaaat.easyrsv.domain.dto.base.BaseResponse;
 import shop.jnjeaaaat.easyrsv.domain.dto.shop.ShopDto;
 import shop.jnjeaaaat.easyrsv.domain.dto.shop.ShopRequest;
-import shop.jnjeaaaat.easyrsv.domain.dto.base.BaseResponse;
-import shop.jnjeaaaat.easyrsv.service.impl.ShopServiceImpl;
+import shop.jnjeaaaat.easyrsv.service.ShopService;
 
 import java.util.List;
 
@@ -16,7 +16,7 @@ import static shop.jnjeaaaat.easyrsv.domain.dto.base.BaseResponseStatus.*;
 @RequestMapping("/easy-rsv/v1/shop")
 public class ShopController {
 
-    private final ShopServiceImpl shopService;
+    private final ShopService shopService;
 
     /**
      * Shop 등록 Controller

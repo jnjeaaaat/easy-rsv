@@ -42,17 +42,17 @@ public class SignController {
      */
     @PostMapping("/sign-in")
     public BaseResponse<SignInResponse> signIn(@RequestBody SignInRequest request) {
-        String token = signService.signInAndCreateToken(request);
 
         return new BaseResponse<>(
-                SUCCESS_SIGN_UP,
-                SignInResponse.from(
-                        request.getEmail(),
-                        token
-                )
+                SUCCESS_SIGN_IN,
+                signService.signInAndCreateToken(request)
         );
     }
 
+    /*
+    토큰 정보가 권한이 없는 유저일때
+    접근 제한 에러 메시지 return
+     */
     @GetMapping("/exception")
     public void exceptionTest() throws BaseException {
         throw new BaseException(ACCESS_DENIED);

@@ -13,8 +13,6 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Component;
-import org.springframework.web.context.request.RequestContextHolder;
-import org.springframework.web.context.request.ServletRequestAttributes;
 
 import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletRequest;
@@ -52,6 +50,7 @@ public class JwtTokenProvider {
     public String createToken(String userEmail, List<String> roles) {
         log.info("[createToken] 토큰 생성 시작");
         Claims claims = Jwts.claims()
+                // email 암호화해서 저장
                 .setSubject(Aes256Util.encrypt(userEmail)); // 일종의 map
         claims.put("roles", roles);
 
@@ -74,7 +73,10 @@ public class JwtTokenProvider {
     public Authentication getAuthentication(String token) {
         log.info("[getAuthentication] 토큰 인증 정보 조회 시작");
         UserDetails userDetails =
-                userDetailsService.loadUserByUsername(this.getUsername(token));
+                userDetailsService.loadUserByUsername(
+                        // claim 의 subject 에 저장되어있는 email 복호화
+                        Aes256Util.decrypt(getUsername(token))
+                );
         log.info("[getAuthentication] 토큰 인증 정보 조회 완료, UserDetails Username : {}", userDetails.getUsername());
         return new UsernamePasswordAuthenticationToken(
                 userDetails, "", userDetails.getAuthorities()
@@ -88,9 +90,9 @@ public class JwtTokenProvider {
         log.info("[getUsername] 토큰 기반 회원 email 추출");
         String info = Jwts.parser()
                 .setSigningKey(secretKey)
-                .parseClaimsJws(token)
-                .getBody()
-                .getSubject();
+                .parseClaimsJws(token) // Jws<Claims>
+                .getBody() // Claims
+                .getSubject(); // 암호화 되어있는 email 값
         log.info("[getUsername] 토큰 기반 회원 email 추출 완료, info : {}", info);
         return info;
     }

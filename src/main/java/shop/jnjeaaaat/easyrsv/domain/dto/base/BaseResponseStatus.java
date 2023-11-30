@@ -17,6 +17,9 @@ public enum BaseResponseStatus {
 
     // user
     SUCCESS_SIGN_UP(OK.value(), "회원가입 성공하였습니다."),
+    SUCCESS_SIGN_IN(OK.value(), "로그인 하였습니다."),
+    SUCCESS_ADD_ADMIN_AUTH(OK.value(), "관리자 계정이 되었습니다."),
+    SUCCESS_ADD_PARTNER_AUTH(OK.value(), "이지랩 파트너가 되었습니다."),
 
 
     //// Exception
@@ -27,6 +30,8 @@ public enum BaseResponseStatus {
     USER_NOT_FOUND(BAD_REQUEST.value(), "해당 유저가 없습니다."),
     ALREADY_REGISTERED_USER(BAD_REQUEST.value(), "이미 등록된 회원입니다."),
     PASSWORD_UN_MATCH(BAD_REQUEST.value(), "비밀번호가 다릅니다."),
+    ALREADY_ADMIN_ACCOUNT(BAD_REQUEST.value(), "이미 관리자 계정입니다."),
+    ALREADY_PARTNER_ACCOUNT(BAD_REQUEST.value(), "이미 이지랩 파트너 입니다."),
 
 
     // token
