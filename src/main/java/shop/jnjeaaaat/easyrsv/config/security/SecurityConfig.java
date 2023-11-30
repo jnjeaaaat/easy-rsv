@@ -4,6 +4,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
@@ -32,6 +33,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity httpSecurity) throws Exception {
+        log.info("[configure] Security configure start");
         httpSecurity.httpBasic().disable()
 
                 .csrf().disable()
@@ -45,7 +47,16 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 .antMatchers("/**/sign-up").permitAll()
                 .antMatchers("/**/sign-in").permitAll()
-                .antMatchers("/admin/**").permitAll()
+                .antMatchers("/easy-rsv/v1/exception").permitAll()
+                .antMatchers(HttpMethod.PUT,"/easy-rsv/admin/auth").permitAll()
+
+
+                // 유저 관련 API
+                .antMatchers("/easy-rsv/v1/user/**").hasRole("USER")
+
+                // 상점 관련 API
+                .antMatchers(HttpMethod.GET, "/easy-rsv/v1/shop/**").hasRole("USER")
+                .antMatchers(HttpMethod.POST, "/easy-rsv/v1/shop").hasRole("PARTNER")
 
                 .antMatchers("**exception**").permitAll()
 

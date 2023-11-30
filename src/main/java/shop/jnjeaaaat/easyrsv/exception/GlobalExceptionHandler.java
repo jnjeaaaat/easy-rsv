@@ -10,9 +10,9 @@ import shop.jnjeaaaat.easyrsv.domain.dto.base.BaseResponse;
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
-    /**
-     * BaseException 발생 시
-     * BaseResponse 객체로 반환
+    /*
+     BaseException 발생 시
+     BaseResponse 객체로 반환
      */
     @ExceptionHandler(BaseException.class)
     public ResponseEntity<BaseResponse> handleShopException(BaseException e) {

@@ -14,8 +14,7 @@ import shop.jnjeaaaat.easyrsv.service.ShopService;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static shop.jnjeaaaat.easyrsv.domain.dto.base.BaseResponseStatus.SHOP_NOT_FOUND;
-import static shop.jnjeaaaat.easyrsv.domain.dto.base.BaseResponseStatus.USER_NOT_FOUND;
+import static shop.jnjeaaaat.easyrsv.domain.dto.base.BaseResponseStatus.*;
 
 @Service
 @RequiredArgsConstructor
@@ -43,13 +42,13 @@ public class ShopServiceImpl implements ShopService {
     }
 
     /*
-     이름(name)으로 Shop 조회
+     이름(name)으로 Shop list 조회
      */
     public List<ShopDto> getShopByName(String name) {
 
         return shopRepository.findAllByName(name)
                 .stream()
-                .map(shop -> ShopDto.from(shop))
+                .map(ShopDto::from)
                 .collect(Collectors.toList());
     }
 
