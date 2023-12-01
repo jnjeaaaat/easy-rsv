@@ -9,9 +9,9 @@ import shop.jnjeaaaat.easyrsv.domain.dto.base.BaseResponseStatus;
 @AllArgsConstructor
 @Builder
 public class BaseException extends RuntimeException{
-    private BaseResponseStatus status;
-    private int errorCode;
-    private String errorMessage;
+    private BaseResponseStatus status;    // BaseResponseStatus enum 값들
+    private int errorCode;      // errorCode 200, 400, ...
+    private String errorMessage;    // 어떤 에러가 발생했는지 response 하기 위한 message
 
     public BaseException(BaseResponseStatus status) {
         this.status = status;

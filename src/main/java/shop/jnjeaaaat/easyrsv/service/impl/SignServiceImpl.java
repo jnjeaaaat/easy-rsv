@@ -22,6 +22,7 @@ import static shop.jnjeaaaat.easyrsv.domain.dto.base.BaseResponseStatus.*;
 @Service
 @RequiredArgsConstructor
 public class SignServiceImpl implements SignService {
+
     private final UserRepository userRepository;
     private final JwtTokenProvider jwtTokenProvider;
     private final PasswordEncoder passwordEncoder;
@@ -34,6 +35,7 @@ public class SignServiceImpl implements SignService {
     public UserDto signUp(SignUpRequest request) {
         log.info("[getSignUpResult] 회원 가입 정보 전달");
 
+        // 이미 가입한 email validation
         if (userRepository.findByEmail(request.getEmail()).isPresent()) {
             throw new BaseException(ALREADY_REGISTERED_USER);
         }
@@ -67,7 +69,9 @@ public class SignServiceImpl implements SignService {
         log.info("[getSignInResult] 패스워드 일치");
 
         // 토큰 발행
-        String token = jwtTokenProvider.createToken(user.getEmail(), user.getRoles());
+        String token =
+                jwtTokenProvider
+                        .createToken(user.getEmail(), user.getId(), user.getRoles());
 
         // return SignInResponse Builder
         return SignInResponse.builder()

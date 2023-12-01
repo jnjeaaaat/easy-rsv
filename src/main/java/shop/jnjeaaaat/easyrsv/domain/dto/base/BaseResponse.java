@@ -3,6 +3,10 @@ package shop.jnjeaaaat.easyrsv.domain.dto.base;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import lombok.Getter;
+import org.springframework.http.HttpStatus;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @JsonPropertyOrder({"message", "result"})
@@ -23,5 +27,11 @@ public class BaseResponse<T> {
         this.code = status.getValue();
         this.message = status.getMessage();
         this.result = result;
+    }
+
+    // Bad request 에 대한 Exception response
+    public BaseResponse(HttpStatus status,String message) {
+        this.code = status.value();
+        this.message = message;
     }
 }

@@ -11,6 +11,8 @@ import shop.jnjeaaaat.easyrsv.domain.dto.sign.SignUpResponse;
 import shop.jnjeaaaat.easyrsv.exception.BaseException;
 import shop.jnjeaaaat.easyrsv.service.SignService;
 
+import javax.validation.Valid;
+
 import static shop.jnjeaaaat.easyrsv.domain.dto.base.BaseResponseStatus.*;
 
 @Slf4j
@@ -27,7 +29,8 @@ public class SignController {
     성공 메세지, email, name, isPartner 반환
      */
     @PostMapping("/sign-up")
-    public BaseResponse<SignUpResponse> signUp(@RequestBody SignUpRequest request) {
+    public BaseResponse<SignUpResponse> signUp(
+            @Valid @RequestBody SignUpRequest request) {
         log.info("user try to Sign Up");
 
         return new BaseResponse<>(
@@ -41,7 +44,8 @@ public class SignController {
     토큰 발행
      */
     @PostMapping("/sign-in")
-    public BaseResponse<SignInResponse> signIn(@RequestBody SignInRequest request) {
+    public BaseResponse<SignInResponse> signIn(
+            @Valid @RequestBody SignInRequest request) {
 
         return new BaseResponse<>(
                 SUCCESS_SIGN_IN,
