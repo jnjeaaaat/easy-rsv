@@ -8,6 +8,8 @@ import shop.jnjeaaaat.easyrsv.domain.dto.user.AuthChangeRequest;
 import shop.jnjeaaaat.easyrsv.domain.dto.user.AuthChangeResponse;
 import shop.jnjeaaaat.easyrsv.service.UserService;
 
+import javax.validation.Valid;
+
 import static shop.jnjeaaaat.easyrsv.domain.dto.base.BaseResponseStatus.*;
 
 @Slf4j
@@ -24,7 +26,7 @@ public class UserController {
      */
     @PutMapping("/partner")
     public BaseResponse<AuthChangeResponse> addPartnerAuthToUser(
-            @RequestBody AuthChangeRequest request) {
+            @Valid @RequestBody AuthChangeRequest request) {
         log.info("[addPartnerAuthToUser] 파트너 권한 추가 요청");
 
         AuthChangeResponse response = userService.addAuthToUser(request);

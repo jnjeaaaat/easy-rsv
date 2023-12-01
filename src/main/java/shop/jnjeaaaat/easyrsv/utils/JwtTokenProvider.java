@@ -10,9 +10,12 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Component;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 
 import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletRequest;
@@ -47,11 +50,12 @@ public class JwtTokenProvider {
     userId 값으로 token 발행
     @return String
      */
-    public String createToken(String userEmail, List<String> roles) {
+    public String createToken(String userEmail, Long userId,  List<String> roles) {
         log.info("[createToken] 토큰 생성 시작");
         Claims claims = Jwts.claims()
                 // email 암호화해서 저장
                 .setSubject(Aes256Util.encrypt(userEmail)); // 일종의 map
+        claims.put("userId", userId);
         claims.put("roles", roles);
 
         Date now = new Date(System.currentTimeMillis());
@@ -120,6 +124,27 @@ public class JwtTokenProvider {
         }
     }
 
+
+    /*
+    token 으로 부터 userId 값 가져오기
+     */
+    public Long getUserIdFromToken() {
+        log.info("[getUserIdFromToken] userId 값 가져오기");
+        HttpServletRequest request =
+                ((ServletRequestAttributes)
+                        RequestContextHolder.currentRequestAttributes())
+                        .getRequest();
+        String token = resolveToken(request);
+
+        log.info("token : {}", token);
+
+        return Jwts.parser()
+                .setSigningKey(secretKey)
+                .parseClaimsJws(token) // Jws<Claims>
+                .getBody() // Claims
+                .get("userId", Long.class); // 암호화 되어있는 email 값
+
+    }
 
 
 }

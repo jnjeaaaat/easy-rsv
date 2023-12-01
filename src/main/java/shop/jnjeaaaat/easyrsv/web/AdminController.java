@@ -8,6 +8,8 @@ import shop.jnjeaaaat.easyrsv.domain.dto.user.AuthChangeRequest;
 import shop.jnjeaaaat.easyrsv.domain.dto.user.AuthChangeResponse;
 import shop.jnjeaaaat.easyrsv.service.UserService;
 
+import javax.validation.Valid;
+
 import static shop.jnjeaaaat.easyrsv.domain.dto.base.BaseResponseStatus.SUCCESS_ADD_ADMIN_AUTH;
 
 @Slf4j
@@ -24,7 +26,7 @@ public class AdminController {
      */
     @PutMapping("/auth")
     public BaseResponse<AuthChangeResponse> addAdminAuthToUser(
-            @RequestBody AuthChangeRequest request) {
+            @Valid @RequestBody AuthChangeRequest request) {
         log.info("[addAdminAuthToUser] 새로운 권한 추가 요청");
 
         AuthChangeResponse response = userService.addAuthToUser(request);

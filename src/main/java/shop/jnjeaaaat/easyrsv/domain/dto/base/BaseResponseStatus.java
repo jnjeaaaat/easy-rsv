@@ -25,6 +25,7 @@ public enum BaseResponseStatus {
     //// Exception
     // shop
     SHOP_NOT_FOUND(BAD_REQUEST.value(), "해당 상점이 없습니다."),
+    USER_UN_MATCH(BAD_REQUEST.value(), "유저가 일치하지 않습니다."),
 
     // user
     USER_NOT_FOUND(BAD_REQUEST.value(), "해당 유저가 없습니다."),
@@ -41,10 +42,10 @@ public enum BaseResponseStatus {
     // access denied
     ACCESS_DENIED(FORBIDDEN.value(), "접근이 금지되었습니다."),
 
-
-
-
     ;
+
+
+
     private int value;
     private String message;
 }

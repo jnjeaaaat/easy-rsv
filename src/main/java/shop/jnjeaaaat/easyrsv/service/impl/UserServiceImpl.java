@@ -65,7 +65,9 @@ public class UserServiceImpl implements UserService {
         }
 
         // 새로운 권한을 추가한 새로운 토큰 발행
-        String newToken = jwtTokenProvider.createToken(user.getEmail(), user.getRoles());
+        String newToken =
+                jwtTokenProvider
+                        .createToken(user.getEmail(), user.getId(), user.getRoles());
         log.info("[addAuthToUser] 새로운 권한 추가 끝");
 
         // AuthChangeResponse Builder

@@ -52,11 +52,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
 
                 // 유저 관련 API
-                .antMatchers("/easy-rsv/v1/user/**").hasRole("USER")
+                .antMatchers("/easy-rsv/v1/user/**").hasAnyRole("USER", "ADMIN")
 
                 // 상점 관련 API
-                .antMatchers(HttpMethod.GET, "/easy-rsv/v1/shop/**").hasRole("USER")
-                .antMatchers(HttpMethod.POST, "/easy-rsv/v1/shop").hasRole("PARTNER")
+                .antMatchers(HttpMethod.GET, "/easy-rsv/v1/shop/**").hasAnyRole("USER", "ADMIN")
+                .antMatchers(HttpMethod.POST, "/easy-rsv/v1/shop").hasAnyRole("PARTNER", "ADMIN")
 
                 .antMatchers("**exception**").permitAll()
 

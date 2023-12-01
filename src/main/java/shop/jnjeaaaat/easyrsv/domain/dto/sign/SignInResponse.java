@@ -4,6 +4,11 @@ import lombok.*;
 
 import java.util.List;
 
+/**
+ * 로그인 하고 나서
+ * email, 권한, jwt Token 을 반환하는
+ * Response Class
+ */
 @Getter
 @Setter
 @Builder
