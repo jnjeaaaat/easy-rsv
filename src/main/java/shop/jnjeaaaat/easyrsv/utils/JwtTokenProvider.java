@@ -10,7 +10,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Component;
@@ -142,8 +141,7 @@ public class JwtTokenProvider {
                 .setSigningKey(secretKey)
                 .parseClaimsJws(token) // Jws<Claims>
                 .getBody() // Claims
-                .get("userId", Long.class); // 암호화 되어있는 email 값
-
+                .get("userId", Long.class); // userId 값
     }
 
 

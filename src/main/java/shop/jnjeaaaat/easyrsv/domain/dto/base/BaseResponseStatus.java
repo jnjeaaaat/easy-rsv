@@ -21,11 +21,12 @@ public enum BaseResponseStatus {
     SUCCESS_ADD_ADMIN_AUTH(OK.value(), "관리자 계정이 되었습니다."),
     SUCCESS_ADD_PARTNER_AUTH(OK.value(), "이지랩 파트너가 되었습니다."),
 
+    SUCCESS_MODIFY_USER(OK.value(), "유저 정보를 수정하였습니다."),
+
 
     //// Exception
     // shop
     SHOP_NOT_FOUND(BAD_REQUEST.value(), "해당 상점이 없습니다."),
-    USER_UN_MATCH(BAD_REQUEST.value(), "유저가 일치하지 않습니다."),
 
     // user
     USER_NOT_FOUND(BAD_REQUEST.value(), "해당 유저가 없습니다."),
@@ -34,10 +35,10 @@ public enum BaseResponseStatus {
     ALREADY_ADMIN_ACCOUNT(BAD_REQUEST.value(), "이미 관리자 계정입니다."),
     ALREADY_PARTNER_ACCOUNT(BAD_REQUEST.value(), "이미 이지랩 파트너 입니다."),
 
-
     // token
     EMPTY_JWT(UNAUTHORIZED.value(), "토큰을 등록해주세요."),
     INVALID_JWT(UNAUTHORIZED.value(), "인증되지 않은 토큰입니다."),
+    USER_UN_MATCH(BAD_REQUEST.value(), "권한이 없는 유저입니다."),
 
     // access denied
     ACCESS_DENIED(FORBIDDEN.value(), "접근이 금지되었습니다."),

@@ -5,9 +5,6 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import lombok.Getter;
 import org.springframework.http.HttpStatus;
 
-import java.util.ArrayList;
-import java.util.List;
-
 @Getter
 @JsonPropertyOrder({"message", "result"})
 public class BaseResponse<T> {
