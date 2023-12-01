@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import shop.jnjeaaaat.easyrsv.domain.dto.base.BaseResponse;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.ArrayList;
 import java.util.List;
 
 @Slf4j
@@ -24,7 +23,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(BaseException.class)
     public ResponseEntity<BaseResponse> handleCustomException(
             BaseException e, HttpServletRequest request) {
-        log.error("{} is occurred. uri:{}", e.getStatus(), request.getRequestURI());
+        log.error("[CustomException] {} is occurred. uri:{}", e.getStatus(), request.getRequestURI());
 
         return ResponseEntity
                 .badRequest()
@@ -36,7 +35,7 @@ public class GlobalExceptionHandler {
     Validation 처리를 할때 생긴 오류들을 처리한다.
      */
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<BaseResponse> handleBadRequestException(
+    public ResponseEntity<BaseResponse> handleMethodArgumentNotValidException (
             MethodArgumentNotValidException e, HttpServletRequest request) {
 
         // 발생한 FiledError 들을 list 에 저장
@@ -44,13 +43,32 @@ public class GlobalExceptionHandler {
         FieldError fieldError = fieldErrors.get(0);   // 첫 번째 에러
         String fieldName = fieldError.getField();  // 필드명
 
-        log.error("fieldName : {} ", fieldName, fieldError.getDefaultMessage() + " uri: {}", request.getRequestURI());
+        log.error("[MethodArgumentNotValidException] fieldName : {} ", fieldName, fieldError.getDefaultMessage() + " uri: {}", request.getRequestURI());
 
         return ResponseEntity
                 .badRequest()
                 .body(new BaseResponse(
                                 HttpStatus.BAD_REQUEST,
                                 fieldError.getDefaultMessage()
+                        )
+                );
+    }
+
+    /*
+    RuntimeException Handler
+    1. PathVariable, RequestParam validation 처리를 할때 생긴 오류들을 처리한다.
+     */
+    @ExceptionHandler(RuntimeException.class)
+    public ResponseEntity<BaseResponse> handleRuntimeException (
+            RuntimeException e, HttpServletRequest request) {
+
+        log.error("[RuntimeException] {} is occurred. uri:{}", e.getMessage(), request.getRequestURI());
+
+        return ResponseEntity
+                .badRequest()
+                .body(new BaseResponse(
+                                HttpStatus.BAD_REQUEST,
+                                e.getMessage()
                         )
                 );
     }

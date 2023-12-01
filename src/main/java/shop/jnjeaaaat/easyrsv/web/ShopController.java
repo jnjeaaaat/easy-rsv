@@ -2,6 +2,7 @@ package shop.jnjeaaaat.easyrsv.web;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import shop.jnjeaaaat.easyrsv.domain.dto.base.BaseResponse;
 import shop.jnjeaaaat.easyrsv.domain.dto.shop.ShopDto;
@@ -17,6 +18,7 @@ import java.util.List;
 import static shop.jnjeaaaat.easyrsv.domain.dto.base.BaseResponseStatus.*;
 
 @Slf4j
+@Validated
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/easy-rsv/v1/shop")
