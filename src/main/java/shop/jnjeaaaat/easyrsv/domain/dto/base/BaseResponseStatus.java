@@ -26,6 +26,8 @@ public enum BaseResponseStatus {
 
     SUCCESS_MODIFY_USER(OK.value(), "유저 정보를 수정하였습니다."),
 
+    // reservation
+    SUCCESS_ADD_RESERVATION(OK.value(), "상점을 예약하였습니다."),
 
     //// Exception
     // shop
@@ -38,6 +40,9 @@ public enum BaseResponseStatus {
     PASSWORD_UN_MATCH(BAD_REQUEST.value(), "비밀번호가 다릅니다."),
     ALREADY_ADMIN_ACCOUNT(BAD_REQUEST.value(), "이미 관리자 계정입니다."),
     ALREADY_PARTNER_ACCOUNT(BAD_REQUEST.value(), "이미 이지랩 파트너 입니다."),
+
+    // reserve
+    OWNER_CANT_RESERVE(BAD_REQUEST.value(), "본인 상점은 예약할 수 없습니다."),
 
     // token
     EMPTY_JWT(UNAUTHORIZED.value(), "토큰을 등록해주세요."),

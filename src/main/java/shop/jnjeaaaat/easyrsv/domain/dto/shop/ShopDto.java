@@ -6,6 +6,9 @@ import shop.jnjeaaaat.easyrsv.domain.model.Shop;
 
 import java.time.LocalDateTime;
 
+/**
+ * 사용자에 가깝게 Shop Entity 를 가공한 DTO Class
+ */
 @Getter
 @Setter
 @Builder

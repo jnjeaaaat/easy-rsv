@@ -4,6 +4,9 @@ import lombok.*;
 
 import javax.validation.constraints.NotBlank;
 
+/**
+ * 상점을 삭제할 때 입력해야 하는 Request Class
+ */
 @Getter
 @Setter
 @NoArgsConstructor
