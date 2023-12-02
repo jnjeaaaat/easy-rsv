@@ -32,6 +32,8 @@ public class UserDto {
                 .password(user.getPassword())
                 .name(user.getName())
                 .roles(user.getRoles())
+                .createdAt(user.getCreatedAt())
+                .updatedAt(user.getUpdatedAt())
                 .build();
     }
 }

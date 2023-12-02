@@ -13,6 +13,7 @@ import shop.jnjeaaaat.easyrsv.utils.JwtTokenProvider;
 
 import javax.validation.Valid;
 import javax.validation.constraints.Min;
+import javax.validation.constraints.NotBlank;
 import java.util.List;
 
 import static shop.jnjeaaaat.easyrsv.domain.dto.base.BaseResponseStatus.*;
@@ -24,7 +25,6 @@ import static shop.jnjeaaaat.easyrsv.domain.dto.base.BaseResponseStatus.*;
 @RequestMapping("/easy-rsv/v1/shop")
 public class ShopController {
 
-    private final JwtTokenProvider jwtTokenProvider;
     private final ShopService shopService;
 
     /*
@@ -35,12 +35,10 @@ public class ShopController {
             @Valid @RequestBody ShopInputRequest request) {
 
         log.info("[addShop] 상점 추가 시도");
-        Long userId = jwtTokenProvider.getUserIdFromToken();
-        log.info("등록하는 유저 id : {}", userId);
 
         return new BaseResponse<>(
                 SUCCESS_ADD_SHOP,
-                shopService.addShop(userId, request)
+                shopService.addShop(request)
         );
     }
 
@@ -48,7 +46,8 @@ public class ShopController {
      해당 이름 (name) 의 Shop List 조회
      */
     @GetMapping("")
-    public BaseResponse<List<ShopDto>> getShopListByName(@RequestParam String name) {
+    public BaseResponse<List<ShopDto>> getShopListByName(
+            @RequestParam @NotBlank String name) {
 
         return new BaseResponse<>(
                 GET_SHOP_LIST_BY_NAME,
@@ -68,4 +67,18 @@ public class ShopController {
                 shopService.getShopById(shopId)
         );
     }
+
+    @PutMapping("/{shopId}")
+    public BaseResponse<ShopDto> modifyShopDetails(
+            @PathVariable @Min(1) Long shopId, @Valid @RequestBody ShopInputRequest request) {
+
+        log.info("[modifyShopDetails] 상점 정보 수정 시도 - 상점 id : {}, shopId");
+
+        return new BaseResponse<>(
+                SUCCESS_MODIFY_SHOP,
+                shopService.modifyShopDetails(shopId, request)
+        );
+
+    }
+
 }

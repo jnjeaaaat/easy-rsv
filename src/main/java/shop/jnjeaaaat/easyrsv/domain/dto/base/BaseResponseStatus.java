@@ -15,6 +15,8 @@ public enum BaseResponseStatus {
     GET_SHOP_LIST_BY_NAME(OK.value(), "해당 이름의 상점 리스트를 찾았습니다."),
     GET_SHOP_BY_ID(OK.value(), "상점을 조회하였습니다."),
 
+    SUCCESS_MODIFY_SHOP(OK.value(), "상점 정보를 수정하였습니다."),
+
     // user
     SUCCESS_SIGN_UP(OK.value(), "회원가입 성공하였습니다."),
     SUCCESS_SIGN_IN(OK.value(), "로그인 하였습니다."),
