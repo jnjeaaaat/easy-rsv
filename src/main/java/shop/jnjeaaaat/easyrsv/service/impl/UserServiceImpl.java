@@ -59,6 +59,11 @@ public class UserServiceImpl implements UserService {
         if (request.getRole().equals("ADMIN")) {
             log.info("[addAdminAuthToUser] 관리자 권한 추가 시도");
             user.getRoles().add("ROLE_ADMIN");
+            /*
+             파트너만 이용할 수 있는 기능까지 같이 이용할 수 있도록
+             파트너 권한도 같이 넣어준다.
+             */
+            user.getRoles().add("ROLE_PARTNER");
             log.info("[addAdminAuthToUser] 관리자 권한 추가 완료");
         }
 
@@ -104,18 +109,25 @@ public class UserServiceImpl implements UserService {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new BaseException(USER_NOT_FOUND));
 
+        // user 정보 변경 setter
         user.setPassword(passwordEncoder.encode(request.getPassword()));
         user.setName(request.getName());
         user.setUpdatedAt(LocalDateTime.now());
 
-        return UserDto.builder()
-                .id(user.getId())
-                .email(user.getEmail())
-                .password(request.getPassword())
-                .name(user.getName())
-                .roles(user.getRoles())
-                .createdAt(user.getCreatedAt())
-                .updatedAt(user.getUpdatedAt())
-                .build();
+        UserDto userDto = UserDto.from(user);
+
+        // response 로 보여줄 비밀번호는 암호화가 안된 비밀번호
+        userDto.setPassword(request.getPassword());
+
+        return userDto;
+//        return UserDto.builder()
+//                .id(user.getId())
+//                .email(user.getEmail())
+//                .password(request.getPassword())
+//                .name(user.getName())
+//                .roles(user.getRoles())
+//                .createdAt(user.getCreatedAt())
+//                .updatedAt(user.getUpdatedAt())
+//                .build();
     }
 }

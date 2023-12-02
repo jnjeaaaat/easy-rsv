@@ -8,9 +8,11 @@ import java.util.List;
 
 public interface ShopService {
 
-    ShopInputResponse addShop(Long userId, ShopInputRequest request);
+    ShopInputResponse addShop(ShopInputRequest request);
 
     List<ShopDto> getShopByName(String name);
 
-    ShopDto getShopById(Long id);
+    ShopDto getShopById(Long shopId);
+
+    ShopDto modifyShopDetails(Long shopId, ShopInputRequest request);
 }
