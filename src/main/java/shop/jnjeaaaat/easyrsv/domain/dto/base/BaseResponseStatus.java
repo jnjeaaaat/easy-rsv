@@ -16,6 +16,7 @@ public enum BaseResponseStatus {
     GET_SHOP_BY_ID(OK.value(), "상점을 조회하였습니다."),
 
     SUCCESS_MODIFY_SHOP(OK.value(), "상점 정보를 수정하였습니다."),
+    SUCCESS_DELETE_SHOP(OK.value(), "해당 상점을 삭제하였습니다."),
 
     // user
     SUCCESS_SIGN_UP(OK.value(), "회원가입 성공하였습니다."),
@@ -29,6 +30,7 @@ public enum BaseResponseStatus {
     //// Exception
     // shop
     SHOP_NOT_FOUND(BAD_REQUEST.value(), "해당 상점이 없습니다."),
+    CHECK_MESSAGE_UN_MATCH(BAD_REQUEST.value(), "삭제 확인 문구가 잘못되었습니다."),
 
     // user
     USER_NOT_FOUND(BAD_REQUEST.value(), "해당 유저가 없습니다."),

@@ -1,8 +1,6 @@
 package shop.jnjeaaaat.easyrsv.service;
 
-import shop.jnjeaaaat.easyrsv.domain.dto.shop.ShopDto;
-import shop.jnjeaaaat.easyrsv.domain.dto.shop.ShopInputRequest;
-import shop.jnjeaaaat.easyrsv.domain.dto.shop.ShopInputResponse;
+import shop.jnjeaaaat.easyrsv.domain.dto.shop.*;
 
 import java.util.List;
 
@@ -15,4 +13,7 @@ public interface ShopService {
     ShopDto getShopById(Long shopId);
 
     ShopDto modifyShopDetails(Long shopId, ShopInputRequest request);
+
+    ShopDeleteResponse deleteShop(Long shopId, ShopDeleteRequest request);
+
 }

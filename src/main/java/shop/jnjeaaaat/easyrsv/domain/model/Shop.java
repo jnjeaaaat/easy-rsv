@@ -3,7 +3,6 @@ package shop.jnjeaaaat.easyrsv.domain.model;
 import lombok.*;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
 
 @Getter
 @Setter

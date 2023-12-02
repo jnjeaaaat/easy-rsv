@@ -5,11 +5,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import shop.jnjeaaaat.easyrsv.domain.dto.base.BaseResponse;
-import shop.jnjeaaaat.easyrsv.domain.dto.shop.ShopDto;
-import shop.jnjeaaaat.easyrsv.domain.dto.shop.ShopInputRequest;
-import shop.jnjeaaaat.easyrsv.domain.dto.shop.ShopInputResponse;
+import shop.jnjeaaaat.easyrsv.domain.dto.shop.*;
 import shop.jnjeaaaat.easyrsv.service.ShopService;
-import shop.jnjeaaaat.easyrsv.utils.JwtTokenProvider;
 
 import javax.validation.Valid;
 import javax.validation.constraints.Min;
@@ -68,6 +65,11 @@ public class ShopController {
         );
     }
 
+    /*
+    상점 정보 수정
+    수정하고자 하는 상점 id값,
+    이름, 설명, 위치 값 받아서 상점 정보 수정
+     */
     @PutMapping("/{shopId}")
     public BaseResponse<ShopDto> modifyShopDetails(
             @PathVariable @Min(1) Long shopId, @Valid @RequestBody ShopInputRequest request) {
@@ -78,7 +80,25 @@ public class ShopController {
                 SUCCESS_MODIFY_SHOP,
                 shopService.modifyShopDetails(shopId, request)
         );
+    }
 
+    /*
+    상점 삭제
+    삭제하려는 상점 id 값,
+    해당 상점 주인유저의 회원 비밀번호, 삭제 확인 문구 입력받아서
+    해당 상점 삭제
+     */
+    @DeleteMapping("/{shopId}")
+    public BaseResponse<ShopDeleteResponse> deleteShop(
+            @PathVariable @Min(1) Long shopId,
+            @Valid @RequestBody ShopDeleteRequest request) {
+
+        log.info("[deleteShop] 상점 삭제 시도");
+
+        return new BaseResponse<>(
+                SUCCESS_DELETE_SHOP,
+                shopService.deleteShop(shopId, request)
+        );
     }
 
 }
