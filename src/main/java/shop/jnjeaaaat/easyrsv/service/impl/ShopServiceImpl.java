@@ -2,14 +2,12 @@ package shop.jnjeaaaat.easyrsv.service.impl;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import shop.jnjeaaaat.easyrsv.domain.dto.shop.ShopDto;
-import shop.jnjeaaaat.easyrsv.domain.dto.shop.ShopInputRequest;
-import shop.jnjeaaaat.easyrsv.domain.dto.shop.ShopInputResponse;
-import shop.jnjeaaaat.easyrsv.domain.dto.user.OwnerInform;
-import shop.jnjeaaaat.easyrsv.domain.model.Shop;
+import shop.jnjeaaaat.easyrsv.domain.dto.shop.*;
 import shop.jnjeaaaat.easyrsv.domain.model.User;
+import shop.jnjeaaaat.easyrsv.domain.model.Shop;
 import shop.jnjeaaaat.easyrsv.domain.repository.ShopRepository;
 import shop.jnjeaaaat.easyrsv.domain.repository.UserRepository;
 import shop.jnjeaaaat.easyrsv.exception.BaseException;
@@ -31,6 +29,7 @@ public class ShopServiceImpl implements ShopService {
     private final JwtTokenProvider jwtTokenProvider;
     private final ShopRepository shopRepository;
     private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
 
     /*
      Shop 등록 Service
@@ -126,6 +125,51 @@ public class ShopServiceImpl implements ShopService {
 
         return ShopDto.from(shop);
 
+    }
+
+    /*
+    삭제하고자 하는 shopId 값에 해당하는 상점 삭제
+    삭제하려면 상점 주인 로그인 할때의 비밀번호와, 삭제 확인 문구가 일치해야함.
+     */
+    @Override
+    @Transactional
+    public ShopDeleteResponse deleteShop(Long shopId, ShopDeleteRequest request) {
+        log.info("[deleteShop] 상점 삭제 - 상점 id : {}", shopId);
+
+        // 토큰으로부터 받아온 userId
+        Long userId = jwtTokenProvider.getUserIdFromToken();
+
+        // shop 존재 유무 확인
+        Shop shop = shopRepository.findById(shopId)
+                .orElseThrow(() -> new BaseException(SHOP_NOT_FOUND));
+        // 비밀번호 비교를 위해 받아온 User 엔티티
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new BaseException(USER_NOT_FOUND));
+
+        // 상점 주인과 접근한 토큰의 user 와 다를 때
+        if (!userId.equals(shop.getOwner().getId())) {
+            throw new BaseException(USER_UN_MATCH);
+        }
+        // 토큰의 user 비밀번호와 입력된 비밀번호가 다를 때
+        if (!passwordEncoder.matches(request.getPassword(), user.getPassword())) {
+            throw new BaseException(PASSWORD_UN_MATCH);
+        }
+        // 삭제 재확인 문구가 다를 때
+        if (!request.getCheckAgain().equals("삭제하겠습니다")) {
+            throw new BaseException(CHECK_MESSAGE_UN_MATCH);
+        }
+
+        // 상점 삭제
+        shop.setOwner(null);   // 외래키 제약 조건에 오류가 나지 않게 하기위해
+                                // Owner 정보를 먼저 null 로 변경해야한다.
+        shopRepository.deleteById(shopId);   // 그리고 나서 delete Shop
+        log.info("[deleteShop] 삭제 완료");
+
+        return ShopDeleteResponse.from(
+                ShopDto.builder()
+                        .id(shopId)
+                        .build()
+        );
     }
 
 }
