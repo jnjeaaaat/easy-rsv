@@ -213,9 +213,18 @@ public class ReservationServiceImpl implements ReservationService {
         Reservation reservation = reservationRepository.findById(reservationId)
                 .orElseThrow(() -> new BaseException(RESERVATION_NOT_FOUND));
 
-        // 예약한 사람 id 와 토큰 userId 값이 다를 때
-        if (!Objects.equals(userId, reservation.getUser().getId())) {
-            throw new BaseException(USER_UN_MATCH);
+        // 예약한 본인이 아니거나, 상점 주인이 아니라면
+        boolean notMe = !Objects.equals(userId, reservation.getUser().getId());
+        boolean notMyShop = !Objects.equals(userId, reservation.getShop().getOwner().getId());
+        if (notMe && notMyShop) {
+            throw new BaseException(NO_AUTH_TO_BROWSE);
+        }
+        // 누가 조회한건지 확인하기 위한 log
+        if (!notMe) {
+            log.info("[getReservation] 예약자 본인이 조회 확인 - 유저 email : {}", reservation.getUser().getEmail());
+        }
+        if (!notMyShop) {
+            log.info("[getReservation] 상점 주인이 조회 확인 - 유저 email : {}", reservation.getShop().getOwner().getEmail());
         }
 
         // 예약 취소
@@ -224,5 +233,34 @@ public class ReservationServiceImpl implements ReservationService {
         reservationRepository.deleteById(reservationId);
         log.info("[cancelReservation] 예약 취소 성공");
 
+    }
+
+    /*
+    예약 id 값 받아서
+    해당 상점의 주인이라면 예약을 승인/거부 결정
+     */
+    @Override
+    @Transactional
+    public void approveReservation(Long reservationId) {
+        log.info("[approveReservation] 예약 승인 - 예약 id : {}", reservationId);
+        Long userId = jwtTokenProvider.getUserIdFromToken();
+
+        // Reservation Entity
+        Reservation reservation = reservationRepository.findById(reservationId)
+                .orElseThrow(() -> new BaseException(RESERVATION_NOT_FOUND));
+
+        // 예약된 상점의 주인이 아닐 때 validation
+        if (!Objects.equals(userId, reservation.getShop().getOwner().getId())) {
+            throw new BaseException(APPROVE_JUST_OWNER);
+        }
+        // 이미 승인된 예약일 때 validation
+        if (reservation.isApproved()) {
+            throw new BaseException(ALREADY_APPROVED);
+        }
+
+        // 승인 진행
+        reservation.setApproved(true);
+        reservation.setUpdatedAt(LocalDateTime.now());
+        log.info("[approveReservation] 예약 승인 완료");
     }
 }

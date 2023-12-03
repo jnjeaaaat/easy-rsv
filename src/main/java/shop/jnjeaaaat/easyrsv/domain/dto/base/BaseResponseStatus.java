@@ -34,6 +34,8 @@ public enum BaseResponseStatus {
     GET_SHOP_RESERVATION_LIST(OK.value(), "상점 예약 리스트를 조회하였습니다."),
     GET_RESERVATION_BY_ID(OK.value(), "예약 정보를 조회하였습니다."),
 
+    SUCCESS_APPROVE_RESERVATION(OK.value(), "예약을 승인하였습니다."),
+
     ///////////////////////////////// Exception ////////////////////////////////
     // shop
     SHOP_NOT_FOUND(BAD_REQUEST.value(), "해당 상점이 없습니다."),
@@ -54,6 +56,8 @@ public enum BaseResponseStatus {
     MODIFY_JUST_ME(BAD_REQUEST.value(), "본인만 예약을 변경할 수 있습니다."),
     MODIFY_JUST_THAT_SHOP(BAD_REQUEST.value(), "예약한 상점이 아닙니다."),
     NO_AUTH_TO_BROWSE(BAD_REQUEST.value(), "예약 정보를 조회할 권한이 없습니다."),
+    APPROVE_JUST_OWNER(BAD_REQUEST.value(), "상점 주인만 승인할 수 있습니다."),
+    ALREADY_APPROVED(BAD_REQUEST.value(), "이미 승인된 예약입니다."),
 
     // token
     EMPTY_JWT(UNAUTHORIZED.value(), "토큰을 등록해주세요."),

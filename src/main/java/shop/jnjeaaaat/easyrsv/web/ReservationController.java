@@ -125,6 +125,20 @@ public class ReservationController {
                 SUCCESS_CANCEL_RESERVATION
         );
 
+    }
 
+    /*
+    예약 id 값 받아서
+    해당 상점의 주인이라면 예약 승인 (approve)
+     */
+    @PutMapping("/approve/{reservationId}")
+    public BaseResponse approveReservation(@PathVariable @Positive Long reservationId) {
+
+        log.info("[approveReservation] 예약 승인");
+        reservationService.approveReservation(reservationId);
+
+        return new BaseResponse(
+                SUCCESS_APPROVE_RESERVATION
+        );
     }
 }

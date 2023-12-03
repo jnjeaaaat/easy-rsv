@@ -31,6 +31,7 @@ public class Reservation extends BaseEntity {
     @Column(nullable = false)
     private LocalDateTime reservationDate;
 
+    // 예약 승인 여부
     @Column(nullable = false)
     private boolean isApproved;
 
