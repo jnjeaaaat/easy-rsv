@@ -38,4 +38,9 @@ public interface ReservationService {
      */
     void cancelReservation(Long reservationId);
 
+    /**
+     * 예약 승인 (상점 주인)
+     */
+    void approveReservation(Long reservationId);
+
 }
