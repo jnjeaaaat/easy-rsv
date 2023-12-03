@@ -5,6 +5,9 @@ import shop.jnjeaaaat.easyrsv.domain.dto.shop.ReservedShopInform;
 
 import java.time.LocalDateTime;
 
+/**
+ * 상점 예약 후 받을 수 있는 Response Class
+ */
 @Getter
 @Setter
 @AllArgsConstructor

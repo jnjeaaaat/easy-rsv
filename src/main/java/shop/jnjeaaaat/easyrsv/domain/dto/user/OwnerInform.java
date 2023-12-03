@@ -12,6 +12,7 @@ import lombok.Setter;
 @Setter
 @Builder
 public class OwnerInform {
+    private Long id;
     private String email;
     private String name;
 }

@@ -3,6 +3,7 @@ package shop.jnjeaaaat.easyrsv.service.impl;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import shop.jnjeaaaat.easyrsv.domain.dto.reservation.ReservationDto;
 import shop.jnjeaaaat.easyrsv.domain.dto.reservation.ReservationInputRequest;
 import shop.jnjeaaaat.easyrsv.domain.dto.reservation.ReservationInputResponse;
@@ -16,7 +17,10 @@ import shop.jnjeaaaat.easyrsv.exception.BaseException;
 import shop.jnjeaaaat.easyrsv.service.ReservationService;
 import shop.jnjeaaaat.easyrsv.utils.JwtTokenProvider;
 
+import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 import static shop.jnjeaaaat.easyrsv.domain.dto.base.BaseResponseStatus.*;
 
@@ -56,7 +60,10 @@ public class ReservationServiceImpl implements ReservationService {
         if (Objects.equals(request.getUserId(), shop.getOwner().getId())) {
             throw new BaseException(OWNER_CANT_RESERVE);
         }
-        // todo: 해당 상점에 이미 예약한 유저일 때
+        // 해당 상점에 이미 예약한 유저일 때
+        if (reservationRepository.findByUserAndShop(user, shop).isPresent()) {
+            throw new BaseException(ALREADY_RESERVATED);
+        }
 
         ReservationDto reservationDto =
                 ReservationDto.from(reservationRepository.save(
@@ -70,6 +77,122 @@ public class ReservationServiceImpl implements ReservationService {
                 );
 
         return ReservationInputResponse.from(reservationDto);
+    }
+
+    /*
+    예약 날짜 변경
+    해당 예약 id, userId, shopId, reservationDate 값 받아서
+    reservationDate 값만 변경 가능
+     */
+    @Override
+    @Transactional
+    public ReservationInputResponse modifyReservation(Long reservationId, ReservationInputRequest request) {
+        log.info("[modifyReservation] 예약 취소 - id : {}", reservationId);
+        Long userId = jwtTokenProvider.getUserIdFromToken();
+
+        // 예약 정보 받아오기
+        Reservation reservation = reservationRepository.findById(reservationId)
+                .orElseThrow(() -> new BaseException(RESERVATION_NOT_FOUND));
+
+        // token 유저 id 와 해당 예약의 유저 id 값이 다를 때
+        if (!Objects.equals(userId, reservation.getUser().getId())) {
+            throw new BaseException(USER_UN_MATCH);
+        }
+        // 예약한 본인만 변경 가능
+        if (!Objects.equals(userId, request.getUserId())) {
+            throw new BaseException(MODIFY_JUST_ME);
+        }
+        // 예약한 상점이 맞는지 확인
+        if (!Objects.equals(request.getShopId(), reservation.getShop().getId())) {
+            throw new BaseException(MODIFY_JUST_THAT_SHOP);
+        }
+
+        // 날짜 변경
+        reservation.setReservationDate(request.getReservationDate());
+        // 수정된 날짜 변경
+        reservation.setUpdatedAt(LocalDateTime.now());
+
+        return ReservationInputResponse.from(
+                ReservationDto.from(reservation)
+        );
+    }
+
+    /*
+    유저 id 값 받아서
+    본인이 예약한 예약 리스트 조회
+     */
+    @Override
+    public List<ReservationDto> getMyReservations(Long userId) {
+        Long tokenUserId = jwtTokenProvider.getUserIdFromToken();
+        log.info("[getMyReservations] 유저의 예약 리스트 조회 - 유저 id : {}", tokenUserId);
+
+        // 토큰 유저와 요청한 유저가 다를 때
+        if (!Objects.equals(tokenUserId, userId)) {
+            throw new BaseException(USER_UN_MATCH);
+        }
+
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new BaseException(USER_NOT_FOUND));
+
+        return reservationRepository.findAllByUser(user) // Reservation Entity List
+                .stream() // Stream 으로
+                .map(ReservationDto::from)  // ReservationDto 의 from()
+                .collect(Collectors.toList());  // List 로 반환
+    }
+
+    /*
+    상점 id 값 받아서
+    본인 상점에 대한 예약 리스트 조회
+     */
+    @Override
+    public List<ReservationDto> getMyShopReservations(Long shopId) {
+        log.info("[getMyShopReservations] 해당 상점의 예약 리스트 조회 - 상점 id : {}", shopId);
+        Long userId = jwtTokenProvider.getUserIdFromToken();
+
+        // 해당 상점
+        Shop shop = shopRepository.findById(shopId)
+                .orElseThrow(() -> new BaseException(SHOP_NOT_FOUND));
+
+        // 해당 상점의 주인이 아닐 때
+        if (!Objects.equals(userId, shop.getOwner().getId())) {
+            throw new BaseException(NOT_OWNER);
+        }
+
+        return reservationRepository.findAllByShop(shop)
+                .stream()
+                .map(ReservationDto::from)
+                .collect(Collectors.toList());
+    }
+
+    /*
+    예약 정보 조회
+    예약 id 값으로 조회
+     */
+    @Override
+    public ReservationDto getReservation(Long reservationId) {
+        log.info("[getReservation] 예약 조회 - 예약 id : {}", reservationId);
+        Long userId = jwtTokenProvider.getUserIdFromToken();
+
+        // Reservation Entity
+        Reservation reservation = reservationRepository.findById(reservationId)
+                .orElseThrow(() -> new BaseException(RESERVATION_NOT_FOUND));
+
+        // 예약한 본인이 아니거나, 상점 주인이 아니라면
+        boolean notMe = !Objects.equals(userId, reservation.getUser().getId());
+        boolean notMyShop = !Objects.equals(userId, reservation.getShop().getOwner().getId());
+        if (notMe && notMyShop) {
+            throw new BaseException(NO_AUTH_TO_BROWSE);
+        }
+
+        // 누가 조회한건지 확인하기 위한 log
+        if (!notMe) {
+            log.info("[getReservation] 예약자 본인이 조회 확인 - 유저 email : {}", reservation.getUser().getEmail());
+        }
+        if (!notMyShop) {
+            log.info("[getReservation] 상점 주인이 조회 확인 - 유저 email : {}", reservation.getShop().getOwner().getEmail());
+        }
+
+        return ReservationDto.from(reservation);
     }
 
     /*
