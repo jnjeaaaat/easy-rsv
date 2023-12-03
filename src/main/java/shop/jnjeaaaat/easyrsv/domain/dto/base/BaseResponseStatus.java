@@ -29,11 +29,16 @@ public enum BaseResponseStatus {
     // reservation
     SUCCESS_ADD_RESERVATION(OK.value(), "상점을 예약하였습니다."),
     SUCCESS_CANCEL_RESERVATION(OK.value(), "상점 예약을 취소하였습니다."),
+    SUCCESS_MODIFY_RESERVATION(OK.value(), "예약 정보를 변경하였습니다."),
+    GET_MY_RESERVATION_LIST(OK.value(), "나의 예약 정보 리스트를 조회하였습니다."),
+    GET_SHOP_RESERVATION_LIST(OK.value(), "상점 예약 리스트를 조회하였습니다."),
+    GET_RESERVATION_BY_ID(OK.value(), "예약 정보를 조회하였습니다."),
 
-    //// Exception
+    ///////////////////////////////// Exception ////////////////////////////////
     // shop
     SHOP_NOT_FOUND(BAD_REQUEST.value(), "해당 상점이 없습니다."),
     CHECK_MESSAGE_UN_MATCH(BAD_REQUEST.value(), "삭제 확인 문구가 잘못되었습니다."),
+    NOT_OWNER(BAD_REQUEST.value(), "해당 상점의 주인이 아닙니다."),
 
     // user
     USER_NOT_FOUND(BAD_REQUEST.value(), "해당 유저가 없습니다."),
@@ -44,7 +49,11 @@ public enum BaseResponseStatus {
 
     // reserve
     OWNER_CANT_RESERVE(BAD_REQUEST.value(), "본인 상점은 예약할 수 없습니다."),
+    ALREADY_RESERVATED(BAD_REQUEST.value(), "이미 예약한 상점입니다."),
     RESERVATION_NOT_FOUND(BAD_REQUEST.value(), "예약된 내역이 없습니다."),
+    MODIFY_JUST_ME(BAD_REQUEST.value(), "본인만 예약을 변경할 수 있습니다."),
+    MODIFY_JUST_THAT_SHOP(BAD_REQUEST.value(), "예약한 상점이 아닙니다."),
+    NO_AUTH_TO_BROWSE(BAD_REQUEST.value(), "예약 정보를 조회할 권한이 없습니다."),
 
     // token
     EMPTY_JWT(UNAUTHORIZED.value(), "토큰을 등록해주세요."),

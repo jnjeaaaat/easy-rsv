@@ -36,6 +36,7 @@ public class ShopDto {
                 .description(shop.getDescription())
                 .location(shop.getLocation())
                 .owner(OwnerInform.builder()
+                        .id(shop.getOwner().getId())
                         .email(shop.getOwner().getEmail())
                         .name(shop.getOwner().getName())
                         .build())

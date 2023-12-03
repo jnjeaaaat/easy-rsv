@@ -7,6 +7,9 @@ import org.springframework.format.annotation.DateTimeFormat;
 import javax.validation.constraints.Positive;
 import java.time.LocalDateTime;
 
+/**
+ * 예약을 추가할 때 필요한 Request Class
+ */
 @Getter
 @Setter
 @NoArgsConstructor
