@@ -7,4 +7,6 @@ public interface ReservationService {
 
     ReservationInputResponse reserveShop(ReservationInputRequest request);
 
+    void cancelReservation(Long reservationId);
+
 }

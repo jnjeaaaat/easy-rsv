@@ -58,18 +58,48 @@ public class ReservationServiceImpl implements ReservationService {
         }
         // todo: 해당 상점에 이미 예약한 유저일 때
 
-        // 승인 여부는 false 로 고정값
         ReservationDto reservationDto =
                 ReservationDto.from(reservationRepository.save(
                                 Reservation.builder()
                                         .user(user)
                                         .shop(shop)
                                         .reservationDate(request.getReservationDate())
-                                        .isApproved(false)
+                                        .isApproved(false) // 처음 승인 여부는 false 로 고정값
                                         .build()
                         )
                 );
 
         return ReservationInputResponse.from(reservationDto);
+    }
+
+    /*
+    예약 취소
+    예약 번호 id 값 받아서 해당 예약 삭제
+
+    삭제 전에 영속성 오류 방지를 위해
+    Shop, User 정보 null 로 변경
+     */
+    @Override
+    public void cancelReservation(Long reservationId) {
+
+        // 토큰으로부터 userId 받아오기
+        Long userId = jwtTokenProvider.getUserIdFromToken();
+        log.info("[cancelReservation] 예약 취소");
+
+        // 해당 예약 받아오기, 없다면 exception
+        Reservation reservation = reservationRepository.findById(reservationId)
+                .orElseThrow(() -> new BaseException(RESERVATION_NOT_FOUND));
+
+        // 예약한 사람 id 와 토큰 userId 값이 다를 때
+        if (!Objects.equals(userId, reservation.getUser().getId())) {
+            throw new BaseException(USER_UN_MATCH);
+        }
+
+        // 예약 취소
+        reservation.setShop(null);  // Shop 정보 먼저 null 로 변경
+        reservation.setUser(null);  // User 정보 먼저 null 로 변경
+        reservationRepository.deleteById(reservationId);
+        log.info("[cancelReservation] 예약 취소 성공");
+
     }
 }

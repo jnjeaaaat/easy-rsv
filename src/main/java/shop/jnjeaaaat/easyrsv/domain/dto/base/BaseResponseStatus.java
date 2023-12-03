@@ -28,6 +28,7 @@ public enum BaseResponseStatus {
 
     // reservation
     SUCCESS_ADD_RESERVATION(OK.value(), "상점을 예약하였습니다."),
+    SUCCESS_CANCEL_RESERVATION(OK.value(), "상점 예약을 취소하였습니다."),
 
     //// Exception
     // shop
@@ -43,6 +44,7 @@ public enum BaseResponseStatus {
 
     // reserve
     OWNER_CANT_RESERVE(BAD_REQUEST.value(), "본인 상점은 예약할 수 없습니다."),
+    RESERVATION_NOT_FOUND(BAD_REQUEST.value(), "예약된 내역이 없습니다."),
 
     // token
     EMPTY_JWT(UNAUTHORIZED.value(), "토큰을 등록해주세요."),
