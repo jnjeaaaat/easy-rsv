@@ -41,6 +41,8 @@ public enum BaseResponseStatus {
     // review
     SUCCESS_WRITE_REVIEW(OK.value(), "새로운 리뷰를 작성하였습니다."),
     SUCCESS_MODIFY_REVIEW(OK.value(), "리뷰 내용을 수정하였습니다."),
+    SUCCESS_GET_SHOP_REVIEW_LIST(OK.value(), "해당 상점의 리뷰 리스트를 조회하였습니다."),
+    SUCCESS_GET_REVIEW(OK.value(), "리뷰를 조회하였습니다."),
 
     ///////////////////////////////// Exception ////////////////////////////////
     // shop

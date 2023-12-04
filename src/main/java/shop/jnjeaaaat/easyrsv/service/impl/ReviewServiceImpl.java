@@ -4,10 +4,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import shop.jnjeaaaat.easyrsv.domain.dto.review.ReviewDto;
-import shop.jnjeaaaat.easyrsv.domain.dto.review.ReviewInputRequest;
-import shop.jnjeaaaat.easyrsv.domain.dto.review.ReviewInputResponse;
-import shop.jnjeaaaat.easyrsv.domain.dto.review.ReviewModifyRequest;
+import shop.jnjeaaaat.easyrsv.domain.dto.review.*;
 import shop.jnjeaaaat.easyrsv.domain.model.Reservation;
 import shop.jnjeaaaat.easyrsv.domain.model.Review;
 import shop.jnjeaaaat.easyrsv.domain.model.Shop;
@@ -21,7 +18,9 @@ import shop.jnjeaaaat.easyrsv.service.ReviewService;
 import shop.jnjeaaaat.easyrsv.utils.JwtTokenProvider;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 import static shop.jnjeaaaat.easyrsv.domain.dto.base.BaseResponseStatus.*;
 
@@ -100,13 +99,16 @@ public class ReviewServiceImpl implements ReviewService {
         // Review Entity
         Review review = reviewRepository.findById(reviewId)
                 .orElseThrow(() -> new BaseException(REVIEW_NOT_FOUND));
+        // Shop Entity
+        shopRepository.findById(review.getShop().getId())
+                .orElseThrow(() -> new BaseException(SHOP_NOT_FOUND));
 
         // 리뷰를 쓴 유저와 요청한 유저가 다를 때
         if (!Objects.equals(userId, review.getUser().getId())) {
             throw new BaseException(USER_UN_MATCH);
         }
 
-        // 날짜가 변경되면 데이터 변경
+        // 내용이 변경되면 데이터 변경
         if (!review.getDescription().equals(request.getDescription())) {
             // 리뷰 내용 수정
             review.setDescription(request.getDescription());
@@ -117,5 +119,58 @@ public class ReviewServiceImpl implements ReviewService {
         return ReviewInputResponse.from(
                 ReviewDto.from(review)
         );
+    }
+
+    /*
+    해당 상점에 리뷰들 조회
+    상점 id 값 받아서
+    해당 상점의 리뷰 리스트 return
+
+    리뷰 id, 리뷰 작성 유저, 리뷰 작성된 상점 id, 리뷰 내용 Response
+     */
+    @Override
+    public List<ReviewShopResponse> getShopReviews(Long shopId) {
+        log.info("[getShopReviews] 상점 리뷰 리스트 조회 - 상점 id : {}", shopId);
+
+        // Shop Entity
+        Shop shop = shopRepository.findById(shopId)
+                .orElseThrow(() -> new BaseException(SHOP_NOT_FOUND));
+
+        // Review Entity List
+        List<Review> reviewList = reviewRepository.findAllByShop(shop);
+
+        // ReviewDto List
+        List<ReviewDto> reviewDtoList = reviewList
+                .stream()
+                .map(ReviewDto::from)
+                .collect(Collectors.toList());
+
+        // ReviewShopResponse List 로 변환 후 return
+        return reviewDtoList.stream()
+                .map(ReviewShopResponse::from)
+                .collect(Collectors.toList());
+    }
+
+    /*
+    해당 리뷰 조회
+    리뷰 id 값 받아서 해당 리뷰 자세한 정보 조회
+     */
+    @Override
+    public ReviewDto getReview(Long reviewId) {
+
+        log.info("[getReview] 리뷰 조회 - 리뷰 id : {}", reviewId);
+
+        // Review Entity
+        Review review = reviewRepository.findById(reviewId)
+                .orElseThrow(() -> new BaseException(REVIEW_NOT_FOUND));
+
+        // User Entity 존재 유무 체크
+        userRepository.findById(review.getUser().getId())
+                .orElseThrow(() -> new BaseException(USER_NOT_FOUND));
+        // Shop Entity 존재 유무 체크
+        shopRepository.findById(review.getShop().getId())
+                .orElseThrow(() -> new BaseException(SHOP_NOT_FOUND));
+
+        return ReviewDto.from(review);
     }
 }

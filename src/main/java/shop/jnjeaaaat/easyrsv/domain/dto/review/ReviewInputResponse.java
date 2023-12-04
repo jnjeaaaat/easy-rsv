@@ -5,6 +5,10 @@ import shop.jnjeaaaat.easyrsv.domain.dto.shop.ShopSimpleInform;
 
 import java.time.LocalDateTime;
 
+/**
+ * 리뷰 작성 후
+ * 사용자가 받을 Response Class
+ */
 @Getter
 @Setter
 @NoArgsConstructor
