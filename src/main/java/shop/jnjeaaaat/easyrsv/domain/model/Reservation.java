@@ -35,4 +35,12 @@ public class Reservation extends BaseEntity {
     @Column(nullable = false)
     private boolean isApproved;
 
+    // 도착 확인을 성공했는지
+    @Column(nullable = false)
+    private boolean isArrived;
+
+    // 리뷰까지 작성되면 완료
+    @Column(nullable = false)
+    private boolean isFinished;
+
 }

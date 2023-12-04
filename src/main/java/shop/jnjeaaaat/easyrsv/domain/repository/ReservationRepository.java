@@ -11,7 +11,7 @@ import java.util.Optional;
 
 @Repository
 public interface ReservationRepository extends JpaRepository<Reservation, Long> {
-    Optional<Reservation> findByUserAndShop(User user, Shop shop);
+    Optional<Reservation> findByUserAndShopAndIsFinished(User user, Shop shop, boolean isArrived);
 
     List<Reservation> findAllByUser(User user);
 
