@@ -6,8 +6,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import shop.jnjeaaaat.easyrsv.domain.dto.shop.*;
-import shop.jnjeaaaat.easyrsv.domain.model.User;
 import shop.jnjeaaaat.easyrsv.domain.model.Shop;
+import shop.jnjeaaaat.easyrsv.domain.model.User;
 import shop.jnjeaaaat.easyrsv.domain.repository.ShopRepository;
 import shop.jnjeaaaat.easyrsv.domain.repository.UserRepository;
 import shop.jnjeaaaat.easyrsv.exception.BaseException;
@@ -21,6 +21,9 @@ import java.util.stream.Collectors;
 
 import static shop.jnjeaaaat.easyrsv.domain.dto.base.BaseResponseStatus.*;
 
+/**
+ * ShopService interface 구현체 Class
+ */
 @Slf4j
 @Service
 @RequiredArgsConstructor

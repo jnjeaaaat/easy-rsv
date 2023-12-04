@@ -12,6 +12,10 @@ import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * User Entity
+ * UserDetails interface 구현체
+ */
 @Getter
 @Setter
 @AllArgsConstructor

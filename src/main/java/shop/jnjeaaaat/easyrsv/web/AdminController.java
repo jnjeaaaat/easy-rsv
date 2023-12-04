@@ -12,6 +12,9 @@ import javax.validation.Valid;
 
 import static shop.jnjeaaaat.easyrsv.domain.dto.base.BaseResponseStatus.SUCCESS_ADD_ADMIN_AUTH;
 
+/**
+ * 관리자 (Admin) 만 사용할 수 있는 api 를 구현하는 Controller
+ */
 @Slf4j
 @RestController
 @RequiredArgsConstructor

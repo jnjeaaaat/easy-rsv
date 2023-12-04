@@ -20,6 +20,10 @@ import java.util.Objects;
 
 import static shop.jnjeaaaat.easyrsv.domain.dto.base.BaseResponseStatus.*;
 
+/**
+ * UserService interface 구현체 Class
+ * User 에 대한 나머지 기능을 담당
+ */
 @Slf4j
 @Service
 @RequiredArgsConstructor

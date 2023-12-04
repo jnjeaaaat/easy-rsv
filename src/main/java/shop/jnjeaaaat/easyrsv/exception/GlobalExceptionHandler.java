@@ -12,6 +12,9 @@ import shop.jnjeaaaat.easyrsv.domain.dto.base.BaseResponse;
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
+/**
+ * 모든 클래스에서 발생하는 exception 핸들러
+ */
 @Slf4j
 @RestControllerAdvice
 public class GlobalExceptionHandler {

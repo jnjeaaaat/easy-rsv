@@ -15,6 +15,9 @@ import java.util.List;
 
 import static shop.jnjeaaaat.easyrsv.domain.dto.base.BaseResponseStatus.*;
 
+/**
+ * 상점 (Shop) 관련 api 를 관리하는 Controller
+ */
 @Slf4j
 @Validated
 @RestController

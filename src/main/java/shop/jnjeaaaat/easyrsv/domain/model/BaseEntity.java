@@ -9,6 +9,9 @@ import javax.persistence.EntityListeners;
 import javax.persistence.MappedSuperclass;
 import java.time.LocalDateTime;
 
+/**
+ * Entity 들에 공통적으로 필요한 createdAt, updatedAt
+ */
 @Getter
 @Setter
 @NoArgsConstructor

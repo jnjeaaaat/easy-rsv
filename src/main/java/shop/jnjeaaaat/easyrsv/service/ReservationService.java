@@ -6,6 +6,9 @@ import shop.jnjeaaaat.easyrsv.domain.dto.reservation.ReservationInputResponse;
 
 import java.util.List;
 
+/**
+ * ReservationService 인터페이스
+ */
 public interface ReservationService {
 
     /**

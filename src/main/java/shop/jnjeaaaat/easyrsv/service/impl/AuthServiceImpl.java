@@ -8,6 +8,10 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import shop.jnjeaaaat.easyrsv.domain.repository.UserRepository;
 
+/**
+ * Auth Security 을 위해
+ * UserDetailsService 를 구현한 AuthServiceImpl 구현체 Class
+ */
 @Slf4j
 @Service
 @RequiredArgsConstructor

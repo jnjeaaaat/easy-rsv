@@ -25,6 +25,9 @@ import java.util.stream.Collectors;
 
 import static shop.jnjeaaaat.easyrsv.domain.dto.base.BaseResponseStatus.*;
 
+/**
+ * ReservationService interface 구현체 Class
+ */
 @Slf4j
 @Service
 @RequiredArgsConstructor

@@ -5,6 +5,9 @@ import lombok.*;
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
+/**
+ * Reservation Entity
+ */
 @Getter
 @Setter
 @AllArgsConstructor
