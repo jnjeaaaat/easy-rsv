@@ -3,6 +3,10 @@ package shop.jnjeaaaat.easyrsv.exception;
 import lombok.*;
 import shop.jnjeaaaat.easyrsv.domain.dto.base.BaseResponseStatus;
 
+/**
+ * 에러 메시지 return 에 필요한 BaseException
+ * RuntimeException 을 상속한다.
+ */
 @Getter
 @Setter
 @NoArgsConstructor

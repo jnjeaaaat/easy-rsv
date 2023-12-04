@@ -23,6 +23,10 @@ import java.util.Base64;
 import java.util.Date;
 import java.util.List;
 
+/**
+ * 토큰 발행, 토큰 정보 조회를 관리하는
+ * JwtTokenProvider Class
+ */
 @Slf4j
 @Component
 @RequiredArgsConstructor

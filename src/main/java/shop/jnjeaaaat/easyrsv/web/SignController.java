@@ -15,6 +15,9 @@ import javax.validation.Valid;
 
 import static shop.jnjeaaaat.easyrsv.domain.dto.base.BaseResponseStatus.*;
 
+/**
+ * 회원 승인 (Sign) 관련 api 를 관리하는 Controller
+ */
 @Slf4j
 @RestController
 @RequiredArgsConstructor

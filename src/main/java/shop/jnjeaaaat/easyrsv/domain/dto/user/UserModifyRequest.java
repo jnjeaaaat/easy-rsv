@@ -4,6 +4,9 @@ import lombok.*;
 
 import javax.validation.constraints.NotBlank;
 
+/**
+ * User 정보 수정 Request Class
+ */
 @Getter
 @Setter
 @NoArgsConstructor

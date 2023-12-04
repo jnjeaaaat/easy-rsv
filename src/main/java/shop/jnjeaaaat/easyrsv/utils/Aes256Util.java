@@ -10,6 +10,10 @@ import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
 import java.nio.charset.StandardCharsets;
 
+/**
+ * String key 값을 받아
+ * Aes256 알고리즘으로 암호화, 복호화 하는 Class
+ */
 @Slf4j
 public class Aes256Util {
     public static String alg = "AES/CBC/PKCS5Padding";

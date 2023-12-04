@@ -18,6 +18,10 @@ import java.util.Collections;
 
 import static shop.jnjeaaaat.easyrsv.domain.dto.base.BaseResponseStatus.*;
 
+/**
+ * SignService interface 구현체 Class
+ * SignUp, SignIn 기능만 담당
+ */
 @Slf4j
 @Service
 @RequiredArgsConstructor

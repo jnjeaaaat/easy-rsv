@@ -4,6 +4,9 @@ import lombok.*;
 
 import javax.persistence.*;
 
+/**
+ * Shop Entity
+ */
 @Getter
 @Setter
 @AllArgsConstructor
