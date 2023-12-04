@@ -40,6 +40,7 @@ public enum BaseResponseStatus {
 
     // review
     SUCCESS_WRITE_REVIEW(OK.value(), "새로운 리뷰를 작성하였습니다."),
+    SUCCESS_MODIFY_REVIEW(OK.value(), "리뷰 내용을 수정하였습니다."),
 
     ///////////////////////////////// Exception ////////////////////////////////
     // shop
@@ -71,6 +72,7 @@ public enum BaseResponseStatus {
     // review
     TOO_EARLY_REVIEW(BAD_REQUEST.value(), "리뷰를 쓰기엔 이릅니다."),
     ALREADY_WRITE_REVIEW(BAD_REQUEST.value(), "이미 리뷰를 작성하였습니다."),
+    REVIEW_NOT_FOUND(BAD_REQUEST.value(), "해당 리뷰가 없습니다."),
 
     // token
     EMPTY_JWT(UNAUTHORIZED.value(), "토큰을 등록해주세요."),
