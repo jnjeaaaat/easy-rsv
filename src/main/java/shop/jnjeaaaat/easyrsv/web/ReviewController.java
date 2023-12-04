@@ -91,4 +91,20 @@ public class ReviewController {
                 reviewService.getReview(reviewId)
         );
     }
+
+    /*
+    리뷰 id 값 받아서
+    해당 리뷰 삭제
+    작성자 본인, 상점 주인만 삭제 가능
+     */
+    @DeleteMapping("/{reviewId}")
+    public BaseResponse deleteReview(@PathVariable @Positive Long reviewId) {
+
+        log.info("[deleteReview] 리뷰 삭제 요청");
+        reviewService.deleteReview(reviewId);
+
+        return new BaseResponse(
+                SUCCESS_DELETE_REVIEW
+        );
+    }
 }

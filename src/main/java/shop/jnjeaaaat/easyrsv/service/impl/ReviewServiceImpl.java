@@ -173,4 +173,46 @@ public class ReviewServiceImpl implements ReviewService {
 
         return ReviewDto.from(review);
     }
+
+    /*
+    리뷰 id 값으로 해당 리뷰 삭제
+    상점 주인, 작성자만 삭제 가능
+     */
+    @Override
+    @Transactional
+    public void deleteReview(Long reviewId) {
+        Long userId = jwtTokenProvider.getUserIdFromToken();
+        log.info("[deleteReview] 리뷰 삭제 - 삭제하려는 유저 id : {}, 삭제하려는 리뷰 id : {}", userId, reviewId);
+
+        // Review Entity
+        Review review = reviewRepository.findById(reviewId)
+                .orElseThrow(() -> new BaseException(REVIEW_NOT_FOUND));
+        // User Entity 존재 유무 확인
+        userRepository.findById(review.getUser().getId())
+                .orElseThrow(() -> new BaseException(USER_NOT_FOUND));
+        // Shop Entity 존재 유무 확인
+        shopRepository.findById(review.getShop().getId())
+                .orElseThrow(() -> new BaseException(SHOP_NOT_FOUND));
+
+        // 작성한 본인이 아니거나, 상점 주인이 아니라면
+        boolean notMe = !Objects.equals(userId, review.getUser().getId());
+        boolean notMyShop = !Objects.equals(userId, review.getShop().getOwner().getId());
+        if (notMe && notMyShop) {
+            throw new BaseException(NO_AUTH_TO_BROWSE);
+        }
+        // 누가 삭제하려는건지 확인하기 위한 log
+        if (!notMe) {
+            log.info("[deleteReview] 작성자가 삭제 요청 - 유저 email : {}", review.getUser().getEmail());
+        }
+        if (!notMyShop) {
+            log.info("[deleteReview] 상점 주인이 삭제 요청 - 유저 email : {}", review.getShop().getOwner().getEmail());
+        }
+
+        // 리뷰 삭제
+        review.setShop(null);  // Shop 정보 먼저 null 로 변경
+        review.setUser(null);  // User 정보 먼저 null 로 변경
+        review.setReservation(null);  // Reservation 정보 먼저 null 로 변경
+        reviewRepository.deleteById(reviewId);
+        log.info("[deleteReview] 리뷰 삭제 성공");
+    }
 }

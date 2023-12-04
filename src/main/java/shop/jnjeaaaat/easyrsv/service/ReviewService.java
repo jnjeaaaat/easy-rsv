@@ -28,4 +28,9 @@ public interface ReviewService {
      * 해당 리뷰 하나 조회
      */
     ReviewDto getReview(Long reviewId);
+
+    /**
+     * 해당 리뷰 삭제
+     */
+    void deleteReview(Long reviewId);
 }
