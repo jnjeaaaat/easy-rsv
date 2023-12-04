@@ -7,6 +7,7 @@ import org.springframework.transaction.annotation.Transactional;
 import shop.jnjeaaaat.easyrsv.domain.dto.review.ReviewDto;
 import shop.jnjeaaaat.easyrsv.domain.dto.review.ReviewInputRequest;
 import shop.jnjeaaaat.easyrsv.domain.dto.review.ReviewInputResponse;
+import shop.jnjeaaaat.easyrsv.domain.dto.review.ReviewModifyRequest;
 import shop.jnjeaaaat.easyrsv.domain.model.Reservation;
 import shop.jnjeaaaat.easyrsv.domain.model.Review;
 import shop.jnjeaaaat.easyrsv.domain.model.Shop;
@@ -83,6 +84,38 @@ public class ReviewServiceImpl implements ReviewService {
                                         .build()
                         )
                 )
+        );
+    }
+
+    /*
+    리뷰 id, 변경할 내용 받아서 내용 수정
+    createReview 와 같은 form return
+     */
+    @Override
+    @Transactional
+    public ReviewInputResponse modifyReview(Long reviewId, ReviewModifyRequest request) {
+        log.info("[modifyReview] 리뷰 수정 - 수정할 리뷰 id : {}", reviewId);
+        Long userId = jwtTokenProvider.getUserIdFromToken();
+
+        // Review Entity
+        Review review = reviewRepository.findById(reviewId)
+                .orElseThrow(() -> new BaseException(REVIEW_NOT_FOUND));
+
+        // 리뷰를 쓴 유저와 요청한 유저가 다를 때
+        if (!Objects.equals(userId, review.getUser().getId())) {
+            throw new BaseException(USER_UN_MATCH);
+        }
+
+        // 날짜가 변경되면 데이터 변경
+        if (!review.getDescription().equals(request.getDescription())) {
+            // 리뷰 내용 수정
+            review.setDescription(request.getDescription());
+            // 수정된 리뷰 날짜
+            review.setUpdatedAt(LocalDateTime.now());
+        }
+
+        return ReviewInputResponse.from(
+                ReviewDto.from(review)
         );
     }
 }
