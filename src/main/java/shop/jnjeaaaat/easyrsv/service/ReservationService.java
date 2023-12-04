@@ -41,6 +41,11 @@ public interface ReservationService {
     /**
      * 예약 승인 (상점 주인)
      */
-    void approveReservation(Long reservationId);
+    boolean approveReservation(Long reservationId, String status);
+
+    /**
+     * 10분전 도착 확인
+     */
+    void arriveCheck(Long reservationId);
 
 }

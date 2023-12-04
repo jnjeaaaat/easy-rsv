@@ -26,6 +26,8 @@ public class ReservationDto {
     private ShopSimpleInform shop;  // 예약한 상점
     private LocalDateTime reservationDate;  // 예약 날짜
     private boolean isApproved;  // 승인 여부
+    private boolean isArrived;   // 도착 성공 여부
+    private boolean isFinished;  // 리뷰까지 작성 후 완료된 예약
 
     private LocalDateTime createdAt;  // 예약을 한 시간
     private LocalDateTime updatedAt;  // 예약 정보 변경 시간
@@ -55,6 +57,8 @@ public class ReservationDto {
                         .build())
                 .reservationDate(reservation.getReservationDate())  // 예약 날짜
                 .isApproved(reservation.isApproved())  // 승인 여부
+                .isArrived(reservation.isArrived())    // 도착 여부
+                .isFinished(reservation.isFinished())  // 리뷰까지 작성 후 완료 여부
                 .createdAt(reservation.getCreatedAt())  // 예약을 한 시간
                 .updatedAt(reservation.getUpdatedAt())  // 예약 정보 변경 시간
                 .build();

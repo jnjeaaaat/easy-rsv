@@ -35,6 +35,8 @@ public enum BaseResponseStatus {
     GET_RESERVATION_BY_ID(OK.value(), "예약 정보를 조회하였습니다."),
 
     SUCCESS_APPROVE_RESERVATION(OK.value(), "예약을 승인하였습니다."),
+    SUCCESS_DENY_RESERVATION(OK.value(), "예약을 거절하였습니다."),
+    SUCCESS_ARRIVE_IN_TIME(OK.value(), "상점 도착 확인되었습니다."),
 
     ///////////////////////////////// Exception ////////////////////////////////
     // shop
@@ -51,13 +53,17 @@ public enum BaseResponseStatus {
 
     // reserve
     OWNER_CANT_RESERVE(BAD_REQUEST.value(), "본인 상점은 예약할 수 없습니다."),
-    ALREADY_RESERVATED(BAD_REQUEST.value(), "이미 예약한 상점입니다."),
+    ALREADY_RESERVED(BAD_REQUEST.value(), "이미 예약한 상점입니다. 기존 예약 삭제 후 진행해주세요."),
     RESERVATION_NOT_FOUND(BAD_REQUEST.value(), "예약된 내역이 없습니다."),
     MODIFY_JUST_ME(BAD_REQUEST.value(), "본인만 예약을 변경할 수 있습니다."),
     MODIFY_JUST_THAT_SHOP(BAD_REQUEST.value(), "예약한 상점이 아닙니다."),
     NO_AUTH_TO_BROWSE(BAD_REQUEST.value(), "예약 정보를 조회할 권한이 없습니다."),
     APPROVE_JUST_OWNER(BAD_REQUEST.value(), "상점 주인만 승인할 수 있습니다."),
     ALREADY_APPROVED(BAD_REQUEST.value(), "이미 승인된 예약입니다."),
+    NOT_APPROVED(BAD_REQUEST.value(), "승인되지 않은 예약정보 입니다."),
+    ALREADY_ARRIVED(BAD_REQUEST.value(), "도착 확인된 예약입니다."),
+    ALREADY_FINISHED(BAD_REQUEST.value(), "이미 완료된 예약입니다."),
+    YOU_ARE_LATE(BAD_REQUEST.value(), "10분전에 도착해야 예약 확인 할 수 있습니다."),
 
     // token
     EMPTY_JWT(UNAUTHORIZED.value(), "토큰을 등록해주세요."),

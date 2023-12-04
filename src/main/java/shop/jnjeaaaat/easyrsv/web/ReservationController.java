@@ -132,13 +132,31 @@ public class ReservationController {
     해당 상점의 주인이라면 예약 승인 (approve)
      */
     @PutMapping("/approve/{reservationId}")
-    public BaseResponse approveReservation(@PathVariable @Positive Long reservationId) {
+    public BaseResponse approveReservation(
+            @PathVariable @Positive Long reservationId,
+            @RequestParam String status) {
 
-        log.info("[approveReservation] 예약 승인");
-        reservationService.approveReservation(reservationId);
+        log.info("[approveReservation] 예약 승인/거절");
 
         return new BaseResponse(
-                SUCCESS_APPROVE_RESERVATION
+                reservationService.approveReservation(reservationId, status) ?
+                        SUCCESS_APPROVE_RESERVATION :
+                        SUCCESS_DENY_RESERVATION
+        );
+    }
+
+    /*
+    예약 id 값 받아서
+    키오스크에서 예약시간 10분전에 도착 확인 요청
+     */
+    @PutMapping("/kiosk/{reservationId}")
+    public BaseResponse arriveCheck(@PathVariable @Positive Long reservationId) {
+
+        log.info("[arriveCheck] 10분전 도착 확인 요청");
+        reservationService.arriveCheck(reservationId);
+
+        return new BaseResponse(
+                SUCCESS_ARRIVE_IN_TIME
         );
     }
 }
