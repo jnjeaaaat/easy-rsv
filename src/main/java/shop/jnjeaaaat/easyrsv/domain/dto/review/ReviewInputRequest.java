@@ -7,6 +7,9 @@ import lombok.NoArgsConstructor;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Positive;
 
+/**
+ * 리뷰 작성 시에 필요한 Request Class
+ */
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor

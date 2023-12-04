@@ -8,6 +8,10 @@ import shop.jnjeaaaat.easyrsv.domain.model.Review;
 
 import java.time.LocalDateTime;
 
+/**
+ * Shop Entity 를
+ * 사용자에 가깝게 가공한 ReviewDto
+ */
 @Getter
 @Setter
 @NoArgsConstructor

@@ -4,6 +4,9 @@ import lombok.*;
 
 import javax.persistence.*;
 
+/**
+ * Review Entity
+ */
 @Getter
 @Setter
 @AllArgsConstructor

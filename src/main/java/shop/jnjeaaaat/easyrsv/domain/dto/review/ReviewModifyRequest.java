@@ -6,6 +6,10 @@ import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.NotBlank;
 
+/**
+ * 리뷰 수정 할때 필요한
+ * Request Class
+ */
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
