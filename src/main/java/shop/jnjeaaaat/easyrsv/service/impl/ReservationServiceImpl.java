@@ -8,6 +8,7 @@ import shop.jnjeaaaat.easyrsv.domain.dto.reservation.ReservationDto;
 import shop.jnjeaaaat.easyrsv.domain.dto.reservation.ReservationInputRequest;
 import shop.jnjeaaaat.easyrsv.domain.dto.reservation.ReservationInputResponse;
 import shop.jnjeaaaat.easyrsv.domain.model.Reservation;
+import shop.jnjeaaaat.easyrsv.domain.model.Review;
 import shop.jnjeaaaat.easyrsv.domain.model.Shop;
 import shop.jnjeaaaat.easyrsv.domain.model.User;
 import shop.jnjeaaaat.easyrsv.domain.repository.ReservationRepository;
@@ -240,6 +241,7 @@ public class ReservationServiceImpl implements ReservationService {
     Shop, User 정보 null 로 변경
      */
     @Override
+    @Transactional
     public void cancelReservation(Long reservationId) {
 
         // 토큰으로부터 userId 받아오기
@@ -250,18 +252,18 @@ public class ReservationServiceImpl implements ReservationService {
         Reservation reservation = reservationRepository.findById(reservationId)
                 .orElseThrow(() -> new BaseException(RESERVATION_NOT_FOUND));
 
-        // 예약한 본인이 아니거나, 상점 주인이 아니라면
+        // 에약자 본인이 아니거나, 상점 주인이 아니라면
         boolean notMe = !Objects.equals(userId, reservation.getUser().getId());
         boolean notMyShop = !Objects.equals(userId, reservation.getShop().getOwner().getId());
         if (notMe && notMyShop) {
             throw new BaseException(NO_AUTH_TO_BROWSE);
         }
-        // 누가 조회한건지 확인하기 위한 log
+        // 누가 삭제하는건지 확인하기 위한 log
         if (!notMe) {
-            log.info("[getReservation] 예약자 본인이 조회 확인 - 유저 email : {}", reservation.getUser().getEmail());
+            log.info("[cancelReservation] 예약한 본인이 삭제 요청 - 유저 email : {}", reservation.getUser().getEmail());
         }
         if (!notMyShop) {
-            log.info("[getReservation] 상점 주인이 조회 확인 - 유저 email : {}", reservation.getShop().getOwner().getEmail());
+            log.info("[cancelReservation] 상점 주인이 삭제 요청 - 유저 email : {}", reservation.getShop().getOwner().getEmail());
         }
 
         // 예약 취소

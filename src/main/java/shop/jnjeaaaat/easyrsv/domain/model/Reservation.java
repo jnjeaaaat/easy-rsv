@@ -46,4 +46,7 @@ public class Reservation extends BaseEntity {
     @Column(nullable = false)
     private boolean isFinished;
 
+    @OneToOne(mappedBy = "reservation")
+    private Review review;
+
 }

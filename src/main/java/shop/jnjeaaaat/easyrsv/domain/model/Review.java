@@ -28,7 +28,7 @@ public class Review extends BaseEntity {
     @JoinColumn(name = "shop_id")
     private Shop shop;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne
     @JoinColumn(name = "reservation_id")
     private Reservation reservation;
 
