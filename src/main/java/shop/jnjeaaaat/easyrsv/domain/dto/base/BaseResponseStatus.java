@@ -38,6 +38,9 @@ public enum BaseResponseStatus {
     SUCCESS_DENY_RESERVATION(OK.value(), "예약을 거절하였습니다."),
     SUCCESS_ARRIVE_IN_TIME(OK.value(), "상점 도착 확인되었습니다."),
 
+    // review
+    SUCCESS_WRITE_REVIEW(OK.value(), "새로운 리뷰를 작성하였습니다."),
+
     ///////////////////////////////// Exception ////////////////////////////////
     // shop
     SHOP_NOT_FOUND(BAD_REQUEST.value(), "해당 상점이 없습니다."),
@@ -64,6 +67,10 @@ public enum BaseResponseStatus {
     ALREADY_ARRIVED(BAD_REQUEST.value(), "도착 확인된 예약입니다."),
     ALREADY_FINISHED(BAD_REQUEST.value(), "이미 완료된 예약입니다."),
     YOU_ARE_LATE(BAD_REQUEST.value(), "10분전에 도착해야 예약 확인 할 수 있습니다."),
+
+    // review
+    TOO_EARLY_REVIEW(BAD_REQUEST.value(), "리뷰를 쓰기엔 이릅니다."),
+    ALREADY_WRITE_REVIEW(BAD_REQUEST.value(), "이미 리뷰를 작성하였습니다."),
 
     // token
     EMPTY_JWT(UNAUTHORIZED.value(), "토큰을 등록해주세요."),

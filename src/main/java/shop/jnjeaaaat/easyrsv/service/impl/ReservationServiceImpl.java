@@ -149,18 +149,8 @@ public class ReservationServiceImpl implements ReservationService {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new BaseException(USER_NOT_FOUND));
 
-        List<Reservation> reservationList = reservationRepository.findAllByUser(user);
-
-        // 제 시간에도 도착 못했거나, 아예 오지 않았을 때
-        for (Reservation reservation : reservationList) {
-            if (LocalDateTime.now().isAfter(reservation.getReservationDate())) {
-                reservation.setFinished(true);
-                reservation.setUpdatedAt(LocalDateTime.now());
-            }
-        }
-
         // isFinished 가 false 인 예약 정보들만 return
-        return reservationList // Reservation Entity List
+        return reservationRepository.findAllByUser(user) // Reservation Entity List
                 .stream() // Stream 으로
                 .filter(reservation -> !reservation.isFinished())
                 .map(ReservationDto::from)  // ReservationDto 의 from()

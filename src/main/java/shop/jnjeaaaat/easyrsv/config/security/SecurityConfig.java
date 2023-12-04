@@ -63,6 +63,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 // 예약 관련 API
                 .antMatchers("/easy-rsv/v1/reservation/**").hasAnyRole("USER")
 
+                // 리뷰 관련 API
+                .antMatchers("/easy-rsv/v1/review/**").hasAnyRole("USER")
+
+                // 그 외
                 .antMatchers("**exception**").permitAll()
 
                 .anyRequest().hasRole("ADMIN")
